@@ -1,13 +1,14 @@
 package com.thompson.james.wordcountapi.controller;
 
+import com.thompson.james.wordcountapi.controller.facade.TextAnalysisControllerFacade;
 import java.io.IOException;
+import org.apache.commons.io.FilenameUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.thompson.james.file.TextFileReader;
-import org.thompson.james.process.TextAnalysisProcess;
 
 /**
  *
@@ -17,38 +18,45 @@ import org.thompson.james.process.TextAnalysisProcess;
 @RequestMapping("/api/textanalysis")
 public class TextAnalysisController {
     
-    private TextAnalysisProcess textAnalysisProcess;
+    private TextAnalysisControllerFacade textAnalysisControllerFacade;
     
     public TextAnalysisController() {
-        textAnalysisProcess = new TextAnalysisProcess();
+        this.textAnalysisControllerFacade = new TextAnalysisControllerFacade();
     }
     
-    @GetMapping()
+    @GetMapping("ping")
     public String ping() {
         return "Pong!";
     }
     
-    @PostMapping(path = "/file/process/json", 
+    @PostMapping(path = "file/process/json", 
                 consumes = MediaType.MULTIPART_FORM_DATA_VALUE, 
-                produces = MediaType.TEXT_HTML_VALUE)
+                produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> ProcessFileToJson(
             @RequestParam("file") MultipartFile file) throws IOException {
-        TextFileReader fileReader = new TextFileReader();
-        String text = fileReader.getTextFromFile(file.getInputStream());
+        if(file.isEmpty()){
+            return ResponseEntity.badRequest().body("File is empty");
+        }
+        if(!FilenameUtils.getExtension(file.getOriginalFilename()).equals("txt")){
+            return ResponseEntity.badRequest().body("File must be .txt file");
+        }
         
-        String responseJson = textAnalysisProcess.process(text, "json");
+        String responseJson = textAnalysisControllerFacade.ProcessFileToOutputtedFormat(file.getInputStream(), "json");
         return ResponseEntity.ok(responseJson);
     }
     
-    @PostMapping(path = "/file/process/text", 
+    @PostMapping(path = "file/process/text", 
                 consumes = MediaType.MULTIPART_FORM_DATA_VALUE, 
-                produces = MediaType.TEXT_HTML_VALUE)
+                produces = MediaType.TEXT_PLAIN_VALUE)
     public ResponseEntity<String> ProcessFileToText(
             @RequestParam("file") MultipartFile file) throws IOException {
-        TextFileReader fileReader = new TextFileReader();
-        String text = fileReader.getTextFromFile(file.getInputStream());
-        
-        String responseJson = textAnalysisProcess.process(text, "textanalysis");
+        if(file.isEmpty()){
+            return ResponseEntity.badRequest().body("File is empty");
+        }
+        if(!FilenameUtils.getExtension(file.getOriginalFilename()).equals("txt")){
+            return ResponseEntity.badRequest().body("File must be .txt file");
+        }
+        String responseJson = textAnalysisControllerFacade.ProcessFileToOutputtedFormat(file.getInputStream(), "textanalysis");
         return ResponseEntity.ok(responseJson);
     }
     
