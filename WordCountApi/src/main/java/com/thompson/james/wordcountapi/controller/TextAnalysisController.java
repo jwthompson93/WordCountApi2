@@ -35,10 +35,10 @@ public class TextAnalysisController {
     public ResponseEntity<String> ProcessFileToJson(
             @RequestParam("file") MultipartFile file) throws IOException {
         if(file.isEmpty()){
-            return ResponseEntity.badRequest().body("File is empty");
+            return ResponseEntity.badRequest().body("{ \"code\":\"404\", \"message\":\"File is empty\" }");
         }
         if(!FilenameUtils.getExtension(file.getOriginalFilename()).equals("txt")){
-            return ResponseEntity.badRequest().body("File must be .txt file");
+            return ResponseEntity.badRequest().body("{ \"code\":\"404\", \"message\":\"File must be .txt file\" }");
         }
         
         String responseJson = textAnalysisControllerFacade.ProcessFileToOutputtedFormat(file.getInputStream(), "json");

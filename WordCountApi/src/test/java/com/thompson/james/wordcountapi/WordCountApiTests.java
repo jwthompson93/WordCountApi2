@@ -31,7 +31,7 @@ public class WordCountApiTests {
     }
     
     @Test
-    void Test_FileUploaded_AndAnalysedSuccessfully() throws Exception {
+    void Test_FileUploaded_AnalysedSuccessfully() throws Exception {
         MockMultipartFile file = new MockMultipartFile(
                 "file", 
                 "test.txt",
@@ -45,7 +45,7 @@ public class WordCountApiTests {
     }
     
     @Test
-    void Test_FileRejected_ContentsEmpty() throws Exception {
+    void Test_FileRejected_ContentsEmpty_TextResponse() throws Exception {
         MockMultipartFile file = new MockMultipartFile(
                 "file", 
                 "test.txt",
@@ -60,7 +60,7 @@ public class WordCountApiTests {
     
     
     @Test
-    void Test_FileRejected_IncorrectFileExtension() throws Exception {
+    void Test_FileRejected_IncorrectFileExtension_TextResponse() throws Exception {
         MockMultipartFile file = new MockMultipartFile(
                 "file", 
                 "test.docx",
@@ -71,5 +71,34 @@ public class WordCountApiTests {
                 .multipart("/api/textanalysis/file/process/text").file(file))
                 .andExpect(status().isBadRequest())
                 .andExpect(content().string("File must be .txt file"));
+    }
+    
+    @Test
+    void Test_FileRejected_ContentsEmpty_JsonResponse() throws Exception {
+        MockMultipartFile file = new MockMultipartFile(
+                "file", 
+                "test.txt",
+                MediaType.TEXT_PLAIN_VALUE,
+                "".getBytes());
+        
+        this.mockMvc.perform(MockMvcRequestBuilders
+                .multipart("/api/textanalysis/file/process/json").file(file))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().string("{ \"code\":\"404\", \"message\":\"File is empty\" }"));
+    }
+    
+    
+    @Test
+    void Test_FileRejected_IncorrectFileExtension_JsonResponse() throws Exception {
+        MockMultipartFile file = new MockMultipartFile(
+                "file", 
+                "test.docx",
+                MediaType.TEXT_PLAIN_VALUE,
+                "Hello world & good morning. The date is 18/05/2016".getBytes());
+        
+        this.mockMvc.perform(MockMvcRequestBuilders
+                .multipart("/api/textanalysis/file/process/json").file(file))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().string("{ \"code\":\"404\", \"message\":\"File must be .txt file\" }"));
     }
 }
