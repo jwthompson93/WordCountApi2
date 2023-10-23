@@ -36,3 +36,7 @@ WordCountApi/.idea/encodings.xml
 WordCountApi/.idea/compiler.xml
 WordCountLib/.idea/misc.xml
 WordCountLib/.idea/misc.xml
+
+### WordCountLib ###
+WordCountLib/target/
+WordCountLib/.idea/
