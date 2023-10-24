@@ -65,6 +65,24 @@ public class TextAnalysisController {
         return ResponseEntity.ok(responseJson);
     }
     
+    @PostMapping(path = "file/process/xml", 
+                consumes = MediaType.MULTIPART_FORM_DATA_VALUE, 
+                produces = MediaType.APPLICATION_XML_VALUE)
+    public ResponseEntity<String> ProcessFileToXml(
+            @RequestParam("file") MultipartFile file) throws IOException {
+        if(file.isEmpty()){
+            return ResponseEntity.badRequest()
+                    .body("File is empty");
+        }
+        if(!FilenameUtils.getExtension(file.getOriginalFilename()).equals("txt")){
+            return ResponseEntity.badRequest()
+                    .body("File must be .txt file");
+        }
+        String responseJson = textAnalysisControllerFacade
+                .ProcessFileToOutputtedFormat(file.getInputStream(), "xml");
+        return ResponseEntity.ok(responseJson);
+    }
+    
     @ExceptionHandler(IOException.class)
     public ResponseEntity handleIoException(IOException ex) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)

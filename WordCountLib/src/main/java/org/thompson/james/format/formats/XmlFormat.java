@@ -9,12 +9,13 @@ import org.thompson.james.format.IFormat;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.thompson.james.string.IFormattedString;
 
 /**
  *
  * @author James Thompson
  */
-public class XmlFormat implements IFormat<String> {
+public class XmlFormat implements IFormat<IFormattedString> {
     
     private final XmlMapper xmlMapper;
     
@@ -23,7 +24,7 @@ public class XmlFormat implements IFormat<String> {
     }
 
     @Override
-    public String format(String input) {
+    public String format(IFormattedString input) {
         try {
             return xmlMapper.writeValueAsString(input);
         } catch (JsonProcessingException ex) {
