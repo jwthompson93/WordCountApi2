@@ -25,7 +25,7 @@ public class TextAnalysisControllerFacade {
         TextFileReader fileReader = new TextFileReader();
         String text = fileReader.getTextFromFile(inputStream);
         
-        String responseString = textAnalysisProcess.process(text, "json");
+        String responseString = textAnalysisProcess.process(text, outputType);
         return responseString;
     }
 }

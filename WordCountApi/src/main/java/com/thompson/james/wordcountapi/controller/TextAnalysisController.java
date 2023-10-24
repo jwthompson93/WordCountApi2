@@ -3,7 +3,6 @@ package com.thompson.james.wordcountapi.controller;
 import com.thompson.james.wordcountapi.controller.facade.TextAnalysisControllerFacade;
 import java.io.IOException;
 import org.apache.commons.io.FilenameUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -35,13 +34,16 @@ public class TextAnalysisController {
     public ResponseEntity<String> ProcessFileToJson(
             @RequestParam("file") MultipartFile file) throws IOException {
         if(file.isEmpty()){
-            return ResponseEntity.badRequest().body("{ \"code\":\"404\", \"message\":\"File is empty\" }");
+            return ResponseEntity.badRequest()
+                    .body("{ \"code\":\"404\", \"message\":\"File is empty\" }");
         }
         if(!FilenameUtils.getExtension(file.getOriginalFilename()).equals("txt")){
-            return ResponseEntity.badRequest().body("{ \"code\":\"404\", \"message\":\"File must be .txt file\" }");
+            return ResponseEntity.badRequest()
+                    .body("{ \"code\":\"404\", \"message\":\"File must be .txt file\" }");
         }
         
-        String responseJson = textAnalysisControllerFacade.ProcessFileToOutputtedFormat(file.getInputStream(), "json");
+        String responseJson = textAnalysisControllerFacade
+                .ProcessFileToOutputtedFormat(file.getInputStream(), "json");
         return ResponseEntity.ok(responseJson);
     }
     
@@ -51,17 +53,21 @@ public class TextAnalysisController {
     public ResponseEntity<String> ProcessFileToText(
             @RequestParam("file") MultipartFile file) throws IOException {
         if(file.isEmpty()){
-            return ResponseEntity.badRequest().body("File is empty");
+            return ResponseEntity.badRequest()
+                    .body("File is empty");
         }
         if(!FilenameUtils.getExtension(file.getOriginalFilename()).equals("txt")){
-            return ResponseEntity.badRequest().body("File must be .txt file");
+            return ResponseEntity.badRequest()
+                    .body("File must be .txt file");
         }
-        String responseJson = textAnalysisControllerFacade.ProcessFileToOutputtedFormat(file.getInputStream(), "textanalysis");
+        String responseJson = textAnalysisControllerFacade
+                .ProcessFileToOutputtedFormat(file.getInputStream(), "text");
         return ResponseEntity.ok(responseJson);
     }
     
     @ExceptionHandler(IOException.class)
     public ResponseEntity handleIoException(IOException ex) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Could not handle file");
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body("Could not handle file");
     }
 }
