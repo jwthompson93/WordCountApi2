@@ -6,7 +6,7 @@ import java.io.IOException;
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
-import org.thompson.james.format.JsonFormat;
+import org.thompson.james.format.formats.JsonFormat;
 import org.thompson.james.process.IProcess;
 import org.thompson.james.process.TextAnalysisProcess;
 import org.thompson.james.textanalysis.object.TextAnalysisResult;

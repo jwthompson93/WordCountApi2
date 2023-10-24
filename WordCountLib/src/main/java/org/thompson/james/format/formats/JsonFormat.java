@@ -2,9 +2,10 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package org.thompson.james.format;
+package org.thompson.james.format.formats;
 
 import com.google.gson.Gson;
+import org.thompson.james.format.IFormat;
 
 /**
  *

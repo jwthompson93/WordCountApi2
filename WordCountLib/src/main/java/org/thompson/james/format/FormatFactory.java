@@ -4,6 +4,9 @@
  */
 package org.thompson.james.format;
 
+import org.thompson.james.format.formats.JsonFormat;
+import org.thompson.james.format.formats.FormattedStringFormat;
+
 /**
  *
  * @author James Thompson
@@ -16,8 +19,8 @@ public class FormatFactory {
         switch(formatName) {
             case "json":
                 return new JsonFormat();
-            case "textanalysis":
-                return new TextAnalysisFormat();
+            case "text":
+                return new FormattedStringFormat();
             default:
                 return new JsonFormat();
         }

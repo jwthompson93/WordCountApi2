@@ -7,11 +7,11 @@ import org.junit.jupiter.params.provider.MethodSource;
 import org.thompson.james.textanalysis.TextAnalysis;
 import org.thompson.james.textanalysis.object.TextAnalysisResult;
 
-public class TextAnalysisTests {
+public class TextAnalysisMethodTests {
     
     private TextAnalysis textAnalysis;
     
-    public TextAnalysisTests() {
+    public TextAnalysisMethodTests() {
         this.textAnalysis = new TextAnalysis();
     }
 

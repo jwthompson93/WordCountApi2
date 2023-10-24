@@ -8,7 +8,7 @@ import java.io.IOException;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 import org.thompson.james.file.TextFileReader;
-import org.thompson.james.format.JsonFormat;
+import org.thompson.james.format.formats.JsonFormat;
 import org.thompson.james.process.IProcess;
 import org.thompson.james.process.TextAnalysisProcess;
 
@@ -16,7 +16,7 @@ import org.thompson.james.process.TextAnalysisProcess;
  *
  * @author James Thompson
  */
-public class TextAnalysisFileTest {
+public class TextAnalysisFileTests {
     
     @Test 
     void Test_ProcessTextFromFile() throws IOException {

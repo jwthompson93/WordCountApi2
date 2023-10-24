@@ -2,8 +2,10 @@ package org.thompson.james.textanalysis.object;
 
 import java.io.Serializable;
 import java.util.Map;
+import java.util.stream.Collectors;
+import org.thompson.james.string.IFormattedString;
 
-public class TextAnalysisResult implements Serializable {
+public class TextAnalysisResult implements Serializable, IFormattedString {
     private transient String sentence;
     private transient String[] splitSentence;
     
@@ -74,5 +76,22 @@ public class TextAnalysisResult implements Serializable {
 
     public void setHighestOccurringWordLength(Map<Integer, Integer> highestOccurringWordLength) {
         this.highestOccurringWordLength = highestOccurringWordLength;
+    }
+    
+    @Override
+    public String toFormattedString() {
+        StringBuilder returnString = new StringBuilder();
+        
+        returnString.append(String.format("Word count = %s \n", this.getWordAmount()));
+        returnString.append(String.format("Average Word Length = %s \n", this.getAverageWordLength()));
+        this.getNumberOfWordsOfLength().forEach((key, value) -> {
+            returnString.append(String.format("Number of words of length %s is %s \n", key, value));
+        });
+        returnString.append(
+                String.format("The most frequently occurring word length is %s, for word lengths of %s \n", 
+                this.getHighestOccurringWordLength().values().toArray()[0],
+                this.getHighestOccurringWordLength().keySet().stream().map(String::valueOf).collect(Collectors.joining(", "))));
+        
+        return returnString.toString();
     }
 }
